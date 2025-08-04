@@ -21,6 +21,10 @@ This module allows organizers to upload student images, track compliance status,
 
 ---
 
+## Live Demo
+
+[Click here to view the site](https://mohd-aslah.github.io/Unifix-Org/)
+
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
