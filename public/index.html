@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unifix Home</title>
+  <link rel="icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: white;
+      color: black;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 35px 40px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .logo {
+      height: 70px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .logout-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-left: auto;
+      padding: 5px;
+    }
+
+    .logout-icon {
+      height: 24px;
+      width: auto;
+    }
+
+    .home-content {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+      margin-top: 80px;
+      margin-bottom: 60px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .home-content h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .home-content p {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: black;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #444;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 15px;
+      background-color: rgb(0, 0, 0);
+      text-align: center;
+      color: white;
+      box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+      }
+      
+      .home-content {
+        padding: 30px 20px;
+        margin: 80px 15px 60px;
+      }
+      
+      .home-content h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <img src="images/logo1.png" class="logo" alt="Unifix Logo">
+      <button class="logout-btn" onclick="logout()">
+        <img src="images/pwr.png" class="logout-icon" alt="Logout">
+      </button>
+    </div>
+  </header>
+
+  <div class="home-content">
+    <h1>Welcome, <span id="username">User</span></h1>
+    <p>Organize and manage your uniform images with ease.</p>
+    <button class="btn" onclick="goToOrganizer()">Organizer Panel</button>
+  </div>
+
+  <footer>
+    © 2025 Unifix Organizer. All rights reserved.
+  </footer>
+
+  <script>
+    async function displayUsername() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5001/user', {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const data = await response.json();
+        if (data.username) {
+          document.getElementById('username').textContent = data.username;
+        }
+      } catch (error) {
+        console.error('Error fetching username:', error);
+        logout();
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    }
+
+    function goToOrganizer() {
+      window.location.href = 'organizer.html';
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', displayUsername);
+  </script>
+</body>
+</html>

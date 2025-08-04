@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unifix Organizer</title>
+  <link rel="icon" href="images/favicon.ico">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #000000;
+      --secondary-color: #363a3d;
+      --accent-color: #e74c3c;
+      --light-color: #ecf0f1;
+      --dark-color: #171819;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--dark-color);
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 30px;
+      background-color: white;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      height: 60px;
+      transition: transform 0.3s;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-icon {
+      position: absolute;
+      right: 20px;
+      width: 30px;
+      cursor: pointer;
+    }
+
+    .home-icon {
+      position: absolute;
+      left: 20px;
+      font-size: 24px;
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .home-icon:hover {
+      color: var(--secondary-color);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 20px auto;
+      padding: 0 20px;
+      max-width: 1200px;
+    }
+
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
+
+    .filter-group label {
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+
+    .filter-group select,
+    .search-bar input {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+      background-color: white;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .filter-group select:focus,
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      min-width: 200px;
+      margin-top: 28px; 
+      flex-grow: 1;
+    }
+
+    .search-bar input {
+      flex-grow: 1;
+      padding-right: 50px;
+    }
+
+    .search-icon {
+      margin-left: -30px;
+      color: var(--primary-color);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 20px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .image-card {
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: white;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .image-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-thumbnail {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .image-info {
+      padding: 15px;
+    }
+
+    .image-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .image-meta {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-bottom: 10px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .icon-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s;
+      font-size: 0.9rem;
+      flex: 1;
+      margin: 0 3px;
+    }
+
+    .icon-btn i {
+      margin-right: 5px;
+    }
+
+    .icon-btn:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .delete-btn {
+      background-color: var(--accent-color);
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .pagination button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .pagination button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .pagination button:disabled {
+      background-color: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    #pageInfo {
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+    }
+
+    #loading {
+      display: none;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .fa-spinner {
+      font-size: 30px;
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+    }
+
+    .loading-text {
+      font-size: 1.1rem;
+      color: var(--primary-color);
+    }
+
+    /* Image Preview Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .content {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+
+      .image-thumbnail {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <i class="fas fa-home home-icon" onclick="goToHome()"></i>
+  <img src="images/logo1.png" class="logo" alt="Unifix Logo">
+</header>
+
+<div class="controls">
+  <div class="filter-group">
+    <label for="collegeFilter">College</label>
+    <select id="collegeFilter" onchange="fetchImages()">
+      <option value="all">All Colleges</option>
+      <option value="College of Engineering Thalassery">College of Engineering Thalassery</option>
+      <option value="Government Engineering College Kannur">Government Engineering College Kannur</option>
+      <option value="College of Engineering Vadakara">College of Engineering Vadakara</option>
+    </select>
+  </div>
+  
+  <div class="filter-group">
+    <label for="degreeFilter">Degree</label>
+    <select id="degreeFilter" onchange="fetchImages()">
+      <option value="all">All Degrees</option>
+      <option value="BTech">BTech</option>
+      <option value="MTech">MTech</option>
+      <option value="MBA">MBA</option>
+      <option value="MCA">MCA</option>
+    </select>
+  </div>
+  
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search by filename..." oninput="filterImages()">
+    <i class="fas fa-search search-icon"></i>
+  </div>
+</div>
+
+<div id="all" class="content"></div>
+
+<div id="loading">
+  <i class="fas fa-spinner fa-spin"></i>
+  <div class="loading-text">Loading images...</div>
+</div>
+
+<div class="pagination">
+  <button id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+  <span id="pageInfo">Page 1 of 1</span>
+  <button id="nextBtn" onclick="nextPage()" disabled>Next</button>
+</div>
+
+<footer>
+  © 2025 Unifix Organizer. All rights reserved.
+</footer>
+
+<!-- Image Preview Modal -->
+<div id="imageModal" class="modal">
+  <span class="modal-close" onclick="closeModal()">&times;</span>
+  <img class="modal-content" id="modalImage">
+</div>
+
+<script>
+  let currentPage = 1;
+  const imagesPerPage = 12;
+  let allImages = [];
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchImages();
+  });
+
+  function goToHome() {
+    window.location.href = 'index.html';
+  }
+
+  async function fetchImages() {
+  const loading = document.getElementById('loading');
+  loading.style.display = 'block';
+  
+  const college = document.getElementById('collegeFilter').value;
+  const degree = document.getElementById('degreeFilter').value;
+  
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("No authentication token found");
+    
+    let url = `/get-images?`;
+    if (college !== 'all') url += `college=${encodeURIComponent(college)}&`;
+    if (degree !== 'all') url += `degree=${encodeURIComponent(degree)}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to fetch images");
+    }
+
+    const images = await response.json();
+    displayImages(images);
+  } catch (err) {
+    console.error("Error fetching images:", err);
+    alert(`Error: ${err.message}`);
+  } finally {
+    loading.style.display = 'none';
+  }
+}
+
+function displayImages(images) {
+  const container = document.getElementById('all');
+  container.innerHTML = '';
+  
+  if (images.length === 0) {
+    container.innerHTML = '<div class="no-images">No images found matching your criteria</div>';
+    return;
+  }
+
+  images.forEach(img => {
+    if (!img.imageBase64) {
+      console.warn(`Image ${img._id} has no base64 data`);
+      return;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'image-card';
+    card.innerHTML = `
+      <img src="data:${img.contentType};base64,${img.imageBase64}" 
+           class="image-thumbnail" 
+           alt="${img.filename}"
+           onclick="showImagePreview(this.src)">
+      <div class="image-info">
+        <div class="image-title">${img.filename}</div>
+        <div class="image-meta">
+          ${img.college || 'Unknown College'} • ${img.degree || 'Unknown Degree'}
+        </div>
+        <div class="btn-group">
+          <a class="icon-btn" href="data:${img.contentType};base64,${img.imageBase64}" 
+             download="${img.filename}">
+            <i class="fas fa-download"></i> Download
+          </a>
+          <button class="icon-btn delete-btn" onclick="deleteImage('${img._id}')">
+            <i class="fas fa-trash-alt"></i> Delete
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+    
+    // Update pagination controls
+    document.getElementById('pageInfo').textContent = `Page ${page} of ${Math.ceil(allImages.length / imagesPerPage)}`;
+    document.getElementById('prevBtn').disabled = page <= 1;
+    document.getElementById('nextBtn').disabled = page >= Math.ceil(allImages.length / imagesPerPage);
+
+
+  async function deleteImage(id) {
+    if (confirm("Are you sure you want to delete this image?")) {
+      try {
+        const response = await fetch(`/delete-image/${id}`, { 
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (response.ok) {
+          fetchImages(); // Refresh the list
+        } else {
+          alert("Failed to delete image. Please try again.");
+        }
+      } catch (err) {
+        console.error("Error deleting image:", err);
+      }
+    }
+  }
+
+  function filterImages() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.image-card');
+
+    cards.forEach(card => {
+      const filename = card.querySelector('.image-title').textContent.toLowerCase();
+      if (filename.includes(searchTerm)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function nextPage() {
+    const totalPages = Math.ceil(allImages.length / imagesPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayImages(currentPage);
+    }
+  }
+
+  function prevPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      displayImages(currentPage);
+    }
+  }
+
+  // Image preview modal functions
+  function showImagePreview(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+  }
+
+  function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+  }
+
+  // Close modal when clicking outside the image
+  window.onclick = function(event) {
+    const modal = document.getElementById('imageModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+</script>
+
+</body>
+</html>

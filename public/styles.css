@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+}
+
+/* Logo styling */
+.logo {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.logo img {
+    width: 150px;
+    height: auto;
+}
+
+/* Container styling */
+.containers {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f9f9f9; /* Light gray background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #000; /* Black text */
+}
+
+/* Input styling */
+form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: transparent;
+    color: #000;
+}
+
+/* Placeholder styling */
+form input::placeholder {
+    color: #555; /* Slightly darker text for placeholders */
+}
+
+/* Button styling */
+form button {
+    padding: 10px;
+    background: #000; /* Black button */
+    color: #fff; /* White text */
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+form button:hover {
+    background: #333; /* Slightly lighter black */
+}
+
+/* Link styling */
+footer {
+    margin-top: 20px;
+    font-size: 13px;
+    text-align: center;
+}
+
+footer p {
+    display: inline;
+    color: #555; /* Black text */
+}
+
+footer a {
+    display: inline;
+    margin-left: 5px;
+    text-decoration: underline;
+    color: #000; /* Black links */
+}
+
+footer a:hover {
+    color: #555; /* Slightly lighter hover effect */
+}
