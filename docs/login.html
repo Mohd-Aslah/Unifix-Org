@@ -40,7 +40,7 @@
         const data = await response.json();
         if (response.ok) {
           localStorage.setItem("token", data.token);
-          window.location.href = "index.html"; // Redirect to organizer page
+          window.location.href = "home.html"; // Redirect to organizer page
         } else {
           alert(data.message || "Invalid credentials");
         }
